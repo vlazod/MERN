@@ -1,15 +1,17 @@
 // const express = require('express');
 import express from 'express'; // to use this ES6 modules declaration, specify in the package.json "type": "module"
 import dotenv from 'dotenv';
-import userRoutes from './routes/userRoutes.js';
+dotenv.config(); // <- se llama a la funcion config acto seguido de importar el modulo dotenv para que funcione en donde quiera que se llame una variable declarada en el
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
-
-// Port configuration fron .env file. Idicates the app yo use the port declarated on that file OR the port 5000
-dotenv.config();
+import connectDB from './config/db.js';
 const port = process.env.PORT || 5000;
-/////////////////////////////////////////
+import userRoutes from './routes/userRoutes.js';
+
+connectDB(); 
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRoutes);
 
